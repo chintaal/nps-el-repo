@@ -1,0 +1,36 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+      - "8080:8080"
+    environment:
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+      - TARGET_URL=http://target:9000
+      - ANOMALY_THRESHOLD_ENGAGE=${ANOMALY_THRESHOLD_ENGAGE:-0.62}
+      - ANOMALY_THRESHOLD_SUSPECT=${ANOMALY_THRESHOLD_SUSPECT:-0.55}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - REPORT_OUTPUT_DIR=/app/reports
+    volumes:
+      - ./backend:/app
+      - reports:/app/reports
+    depends_on:
+      - target
+
+  target:
+    image: python:3.11-slim
+    command: python -m http.server 9000
+    working_dir: /var/www
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_WS_URL=ws://localhost:8000/ws
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  reports:
