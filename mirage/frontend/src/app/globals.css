@@ -66,3 +66,81 @@ body::after {
 .animate-slide-in {
   animation: slide-in 200ms ease-out;
 }
+
+/* ── HUD design system ─────────────────────────────────────────────────── */
+
+.font-display {
+  font-family: 'Rajdhani', 'JetBrains Mono', sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Glass HUD surface with hairline border + inner glow */
+.hud-surface {
+  background: linear-gradient(180deg, rgba(13, 17, 23, 0.72), rgba(3, 7, 18, 0.72));
+  border: 1px solid rgba(34, 211, 238, 0.12);
+  backdrop-filter: blur(6px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 10px 40px -16px rgba(0, 0, 0, 0.8);
+}
+
+/* Animated corner brackets for the targeting-reticle look */
+.hud-corners {
+  position: relative;
+}
+.hud-corners::before,
+.hud-corners::after {
+  content: '';
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  pointer-events: none;
+}
+.hud-corners::before { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.hud-corners::after { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.text-glow-cyan { text-shadow: 0 0 10px rgba(34, 211, 238, 0.55); }
+.text-glow-red { text-shadow: 0 0 10px rgba(239, 68, 68, 0.55); }
+
+/* Moving sheen used on KPI tiles / loading bars */
+@keyframes sheen {
+  0% { transform: translateX(-120%); }
+  100% { transform: translateX(220%); }
+}
+.animate-sheen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.12), transparent);
+  transform: translateX(-120%);
+  animation: sheen 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  92% { opacity: 1; }
+  93% { opacity: 0.6; }
+  94% { opacity: 1; }
+}
+.animate-flicker { animation: flicker 6s linear infinite; }
+
+@keyframes dash-flow {
+  to { stroke-dashoffset: -1000; }
+}
+.animate-dash-flow {
+  stroke-dasharray: 6 8;
+  animation: dash-flow 14s linear infinite;
+}
+
+@keyframes radar-sweep {
+  to { transform: rotate(360deg); }
+}
+.animate-radar { animation: radar-sweep 4s linear infinite; transform-origin: center; }
+
+/* Grid backdrop for HUD panels */
+.hud-grid-bg {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}

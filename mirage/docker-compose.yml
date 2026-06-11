@@ -1,5 +1,8 @@
+name: mirage-lab
+
 services:
   backend:
+    container_name: mirage-backend
     build: ./backend
     ports:
       - "8000:8000"
@@ -18,11 +21,13 @@ services:
       - target
 
   target:
+    container_name: mirage-target
     image: python:3.11-slim
     command: python -m http.server 9000
     working_dir: /var/www
 
   frontend:
+    container_name: mirage-frontend
     build: ./frontend
     ports:
       - "3000:3000"

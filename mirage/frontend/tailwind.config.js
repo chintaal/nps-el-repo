@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'Courier New', 'monospace'],
+        display: ['Rajdhani', 'JetBrains Mono', 'sans-serif'],
       },
       colors: {
         mirage: {
@@ -19,8 +20,13 @@ module.exports = {
           emerald: '#34D399',
           red: '#EF4444',
           yellow: '#FACC15',
+          violet: '#A78BFA',
           dim: '#374151',
         },
+      },
+      boxShadow: {
+        hud: '0 0 0 1px rgba(34,211,238,0.08), 0 8px 40px -12px rgba(34,211,238,0.18)',
+        glowcyan: '0 0 18px -2px rgba(34,211,238,0.55)',
       },
       animation: {
         'pulse-ring': 'pulse-ring 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',

@@ -148,6 +148,13 @@ async def _handle_connection(
         broadcaster = app.state.broadcaster
         anomaly_engine = app.state.anomaly_engine
 
+        # Capture prior arrival time before get_or_create refreshes last_seen,
+        # so the timing-burstiness feature sees the real inter-arrival gap.
+        _existing = await ledger.get_session(session_id)
+        _prev_seen = _existing.last_seen if _existing else None
+        _now_ts = time.time()
+        request_times = [_prev_seen, _now_ts] if _prev_seen is not None else [_now_ts]
+
         session = await ledger.get_or_create(session_id, client_ip)
         await ledger.append_content_length(session_id, raw_request["content_length"])
 
@@ -237,6 +244,8 @@ async def _handle_connection(
             raw_request["body"],
             raw_request["content_length"],
             session.content_length_history,
+            headers=raw_request["headers"],
+            request_times=request_times,
         )
         score = anomaly_engine.score(features)
         await ledger.append_score(session_id, score)

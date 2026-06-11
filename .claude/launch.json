@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "mirage-frontend",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "mirage/frontend", "run", "dev", "--", "-p", "3001"],
+      "port": 3001
+    }
+  ]
+}
